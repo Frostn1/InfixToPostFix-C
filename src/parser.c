@@ -18,14 +18,15 @@ void parse(parser* pr) {
         pr->current++;
         }
         if(isOp(pr->expression[pr->current])) {
-            if(isStrongerOp(peek(pr->st), pr->expression[pr->current])) {
-                
-                push(pr->st, &pr->expression[pr->current]);
-                pr->current++;
+            if(isStrongerOp(peek(pr->st)[0], pr->expression[pr->current])) {
+                pr->out = (char*)malloc(sizeof(char)*++pr->outSize);
+                pr->out[pr->outSize-1] = pop(pr->st)[0];
+                pr->out[pr->outSize] = '\0';
             }
             push(pr->st, &pr->expression[pr->current]);
             pr->current++;
         }
+        pr->current++;
     }
     while(pr->st->sp > 0) {
         pr->out = (char*)malloc(sizeof(char)*++pr->outSize);
@@ -52,5 +53,5 @@ int isOp(char op) {
 }
 
 int isStrongerOp(char first, char second) {
-
+    return (first=='*' || first=='/') && (second=='+' || second=='-');
 }

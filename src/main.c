@@ -2,14 +2,15 @@
 #include "../include/parser.h"
 #include <stdio.h>
 #include <string.h>
+#include <io.h>
 char* readFile(char* filePath) {
 
     
     // if (argc - 1 == flags.size()) throwError("missing file input");
     // if (i != argc - 1) throwError("arguments order is misaligned");
-    if (_access(filePath, 0) == -1) throwError("file doesn't exist."); 
+    if (_access(filePath, 0) == -1) printf("file doesn't exist.\n"); 
     FILE* filePointer = fopen(filePath,"r");
-    if (!filePointer) throwError("can't open file");
+    if (!filePointer) printf("can't open file\n");
     char* buffer = 0;
     long length;
     fseek(filePointer, 0, SEEK_END);
@@ -23,7 +24,7 @@ char* readFile(char* filePath) {
 
 int main(int argc, char** argv) {
     if(argc < 2) {
-        printf("Error occured : Missing text file or expression\n");
+        printf("missing text file or expression\n");
         return 1;
     }
     stack* st = initStack();
@@ -31,6 +32,9 @@ int main(int argc, char** argv) {
         parser* pr = initParser(readFile(argv[2]));
         parse(pr);
         printf("PostFixExp is %s\n", pr->out);
+    }
+    else {
+        printf("missing flag\n");
     }
     return 0;
 }

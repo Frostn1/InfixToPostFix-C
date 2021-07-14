@@ -16,4 +16,5 @@ void parse(parser* pr);
 int isNumeric(char num);
 int isSpace(char space);
 int isOp(char op);
+int isStrongerOp(char first, char second);
 #endif // !PARSER_H
