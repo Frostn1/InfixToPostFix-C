@@ -1,4 +1,5 @@
 #include "../include/stack.h"
+#include "../include/parser.h"
 #include <stdio.h>
 #include <string.h>
 char* readFile(char* filePath) {
@@ -27,8 +28,9 @@ int main(int argc, char** argv) {
     }
     stack* st = initStack();
     if(!strcmp(argv[1], "-t")) {
-        char* fileContent = readFile(argv[2]);
-
+        parser* pr = initParser(readFile(argv[2]));
+        parse(pr);
+        printf("PostFixExp is %s\n", pr->out);
     }
     return 0;
 }
