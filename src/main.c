@@ -31,6 +31,7 @@ int main(int argc, char** argv) {
     if(!strcmp(argv[1], "-t")) {
         parser* pr = initParser(readFile(argv[2]));
         parse(pr);
+        printf("Finished\n");
         printf("PostFixExp is %s\n", pr->out);
     }
     else {

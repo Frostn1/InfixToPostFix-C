@@ -6,32 +6,35 @@ parser* initParser(char* text) {
     pr->current = 0;
     pr->expression = (char*)malloc(sizeof(char) * (strlen(text)+1));
     pr->outSize = 1;
+    pr->out = (char*)malloc(sizeof(char));
     strcpy(pr->expression, text);
     return pr;
 }
 void parse(parser* pr) {
     while(pr->current < strlen(pr->expression)) {
-        while(isNumeric(pr->expression[pr->current])) {
-        pr->out = (char*)malloc(sizeof(char)*++pr->outSize);
-        pr->out[pr->outSize-1] = pr->expression[pr->current];
-        pr->out[pr->outSize] = '\0';
+        while( pr->current < strlen(pr->expression) && isNumeric(pr->expression[pr->current])) {
+        pr->out = (char*)realloc(pr->out,sizeof(char)*++pr->outSize);
+        pr->out[pr->outSize-2] = pr->expression[pr->current];
+        pr->out[pr->outSize-1] = '\0';
         pr->current++;
         }
-        if(isOp(pr->expression[pr->current])) {
-            if(isStrongerOp(peek(pr->st)[0], pr->expression[pr->current])) {
-                pr->out = (char*)malloc(sizeof(char)*++pr->outSize);
-                pr->out[pr->outSize-1] = pop(pr->st)[0];
-                pr->out[pr->outSize] = '\0';
+        if(pr->current < strlen(pr->expression) && isOp(pr->expression[pr->current])) {
+            if(pr->st->sp && (peek(pr->st)[0], pr->expression[pr->current])) {
+                pr->out = (char*)realloc(pr->out,sizeof(char)*++pr->outSize);
+                pr->out[pr->outSize-2] = pop(pr->st)[0];
+                pr->out[pr->outSize-1] = '\0';
             }
-            push(pr->st, &pr->expression[pr->current]);
-            pr->current++;
+            char* temp = (char*)malloc(sizeof(char)*2);
+            temp[0] = pr->expression[pr->current];
+            temp[1] = '\0';
+            push(pr->st, temp);
         }
         pr->current++;
     }
     while(pr->st->sp > 0) {
-        pr->out = (char*)malloc(sizeof(char)*++pr->outSize);
-        pr->out[pr->outSize-1] = pop(pr->st)[0];
-        pr->out[pr->outSize] = '\0';
+        pr->out = (char*)realloc(pr->out,sizeof(char)*++pr->outSize);
+        pr->out[pr->outSize-2] = pop(pr->st)[0];
+        pr->out[pr->outSize-1] = '\0';
     }
 }
 int isNumeric(char num) {
@@ -53,5 +56,6 @@ int isOp(char op) {
 }
 
 int isStrongerOp(char first, char second) {
+    printf("got here %c %c", first, second);
     return (first=='*' || first=='/') && (second=='+' || second=='-');
 }

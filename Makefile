@@ -32,3 +32,7 @@ clean:
 	$(AT)-rm -f program
 	@echo Removing build directory
 	$(AT)-rm -rf build
+
+run:
+	make
+	intpo.exe -t exp.txt
