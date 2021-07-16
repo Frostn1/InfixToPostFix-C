@@ -12,12 +12,20 @@ parser* initParser(char* text) {
 }
 void parse(parser* pr) {
     while(pr->current < strlen(pr->expression)) {
+        if((pr->current < strlen(pr->expression) && isNumeric(pr->expression[pr->current])) &&
+            pr->outSize > 1 && isNumeric(pr->out[pr->outSize-2])) {
+            pr->out = (char*)realloc(pr->out,sizeof(char)*++pr->outSize);
+            pr->out[pr->outSize-2] = ' ';
+            pr->out[pr->outSize-1] = '\0';
+        }
         while( pr->current < strlen(pr->expression) && isNumeric(pr->expression[pr->current])) {
         pr->out = (char*)realloc(pr->out,sizeof(char)*++pr->outSize);
         pr->out[pr->outSize-2] = pr->expression[pr->current];
         pr->out[pr->outSize-1] = '\0';
         pr->current++;
         }
+        
+        
         if(pr->current < strlen(pr->expression) && isOp(pr->expression[pr->current])) {
             if(pr->st->sp && (peek(pr->st)[0], pr->expression[pr->current])) {
                 pr->out = (char*)realloc(pr->out,sizeof(char)*++pr->outSize);
