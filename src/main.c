@@ -33,6 +33,20 @@ int main(int argc, char** argv) {
         parse(pr);
         printf("Finished\n");
         printf("PostFixExp is %s\n", pr->out);
+    } else if(!strcmp(argv[1],"-n")) {
+        char* output = (char*)malloc(sizeof(char));
+        output[0] = '\0';
+        printf("argc is %d\n",argc);
+        for(int i = 2;i<argc;i++) {
+            printf("current is %s\n",argv[i]);
+            output = (char*)realloc(output, sizeof(char)*(strlen(output)+strlen(argv[i])+1));
+            strcat(output, argv[i]);
+        }
+        printf("%s\n",output);
+        parser* pr = initParser(output);
+        parse(pr);
+        printf("Finished\n");
+        printf("PostFixExp is %s\n", pr->out);
     }
     else {
         printf("missing flag\n");
