@@ -28,28 +28,24 @@ int main(int argc, char** argv) {
         return 1;
     }
     stack* st = initStack();
+    parser* pr = NULL;
     if(!strcmp(argv[1], "-t")) {
-        parser* pr = initParser(readFile(argv[2]));
-        parse(pr);
-        printf("Finished\n");
-        printf("PostFixExp is %s\n", pr->out);
+        pr = initParser(readFile(argv[2]));
     } else if(!strcmp(argv[1],"-n")) {
         char* output = (char*)malloc(sizeof(char));
         output[0] = '\0';
-        printf("argc is %d\n",argc);
         for(int i = 2;i<argc;i++) {
-            printf("current is %s\n",argv[i]);
             output = (char*)realloc(output, sizeof(char)*(strlen(output)+strlen(argv[i])+1));
             strcat(output, argv[i]);
         }
-        printf("%s\n",output);
-        parser* pr = initParser(output);
-        parse(pr);
-        printf("Finished\n");
-        printf("PostFixExp is %s\n", pr->out);
+        pr = initParser(output);
     }
     else {
         printf("missing flag\n");
+        return 0;
     }
+
+    parse(pr);
+    printf("%s\n", pr->out);
     return 0;
 }

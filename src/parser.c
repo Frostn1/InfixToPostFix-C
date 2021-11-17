@@ -19,10 +19,10 @@ void parse(parser* pr) {
             pr->out[pr->outSize-1] = '\0';
         }
         while( pr->current < strlen(pr->expression) && isNumeric(pr->expression[pr->current])) {
-        pr->out = (char*)realloc(pr->out,sizeof(char)*++pr->outSize);
-        pr->out[pr->outSize-2] = pr->expression[pr->current];
-        pr->out[pr->outSize-1] = '\0';
-        pr->current++;
+            pr->out = (char*)realloc(pr->out,sizeof(char)*++pr->outSize);
+            pr->out[pr->outSize-2] = pr->expression[pr->current];
+            pr->out[pr->outSize-1] = '\0';
+            pr->current++;
         }
         
         
