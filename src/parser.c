@@ -1,4 +1,4 @@
-#include "../include/parser.h"
+#include "../inc/parser.h"
 
 parser* initParser(char* text) {
     parser* pr = (parser*)malloc(sizeof(parser));
